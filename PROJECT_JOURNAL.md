@@ -32,3 +32,13 @@ The new version will focus on:
 - Organize dataset
 - Build preprocessing pipeline
 - Train baseline model
+## Day 2
+
+### Goal
+Build the first version of the machine learning pipeline.
+
+### Tasks
+- Organize dataset
+- Explore data
+- Create preprocessing pipeline
+- Train first model
