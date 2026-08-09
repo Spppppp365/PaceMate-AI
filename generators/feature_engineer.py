@@ -41,7 +41,6 @@ def load_data():
 def create_historical_features(
     daily_data
 ):
-
     data = daily_data.copy()
 
     data = data.sort_values(
@@ -188,6 +187,96 @@ def create_historical_features(
         - data["water_7day_mean"]
     )
 
+    # Historical variability
+
+    data["hrv_3day_std"] = (
+        grouped["hrv"]
+        .transform(
+            lambda x:
+            x.shift(1)
+            .rolling(3, min_periods=2)
+            .std()
+        )
+        .fillna(0)
+    )
+
+    data["hrv_7day_std"] = (
+        grouped["hrv"]
+        .transform(
+            lambda x:
+            x.shift(1)
+            .rolling(7, min_periods=2)
+            .std()
+        )
+        .fillna(0)
+    )
+
+    data["symptom_3day_std"] = (
+        grouped["symptom_severity"]
+        .transform(
+            lambda x:
+            x.shift(1)
+            .rolling(3, min_periods=2)
+            .std()
+        )
+        .fillna(0)
+    )
+
+    data["symptom_7day_std"] = (
+        grouped["symptom_severity"]
+        .transform(
+            lambda x:
+            x.shift(1)
+            .rolling(7, min_periods=2)
+            .std()
+        )
+        .fillna(0)
+    )
+
+    data["sleep_3day_std"] = (
+        grouped["sleep_hours"]
+        .transform(
+            lambda x:
+            x.shift(1)
+            .rolling(3, min_periods=2)
+            .std()
+        )
+        .fillna(0)
+    )
+
+    data["sleep_7day_std"] = (
+        grouped["sleep_hours"]
+        .transform(
+            lambda x:
+            x.shift(1)
+            .rolling(7, min_periods=2)
+            .std()
+        )
+        .fillna(0)
+    )
+
+    data["water_3day_std"] = (
+        grouped["water_intake_ml"]
+        .transform(
+            lambda x:
+            x.shift(1)
+            .rolling(3, min_periods=2)
+            .std()
+        )
+        .fillna(0)
+    )
+
+    data["water_7day_std"] = (
+        grouped["water_intake_ml"]
+        .transform(
+            lambda x:
+            x.shift(1)
+            .rolling(7, min_periods=2)
+            .std()
+        )
+        .fillna(0)
+    )
+
     return data
 
 
@@ -195,7 +284,6 @@ def merge_features_and_targets(
     features,
     targets
 ):
-
     target_columns = [
         "participant_id",
         "day",
@@ -226,7 +314,6 @@ def merge_features_and_targets(
 def remove_invalid_rows(
     data
 ):
-
     required_columns = [
         "previous_sleep_hours",
         "previous_water_intake_ml",
@@ -245,7 +332,6 @@ def remove_invalid_rows(
 def save_training_data(
     data
 ):
-
     project_root = (
         Path(__file__)
         .resolve()
@@ -267,7 +353,6 @@ def save_training_data(
 
 
 def main():
-
     print(
         "Loading daily observations and targets..."
     )
