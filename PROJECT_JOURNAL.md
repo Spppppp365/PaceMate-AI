@@ -864,3 +864,129 @@ The project therefore continued to use a separate participant-level test set as 
 
 The results establish a reproducible machine learning research pipeline, but they should not be interpreted as clinical validation.
 
+## Date: August 10, 2026
+
+## Milestone: Production Model Validation, Calibration, Threshold Optimization, and Verification
+
+Today I completed a major stage of the PaceMate-AI machine learning pipeline. The project now has calibrated production models for all six prediction targets, optimized decision thresholds, held-out test evaluation, and individual production-model verification scripts.
+
+The participant-level dataset pipeline was successfully rerun from beginning to end. The project generated 500 participants and 90,000 daily observations covering 180 days per participant. The target-generation pipeline produced 89,500 target rows, and feature engineering produced 89,000 final training rows with 44 total columns.
+
+The participant-level split was preserved throughout the modeling process:
+
+- 350 participants for training
+- 75 participants for validation
+- 75 participants for testing
+- 62,300 training rows
+- 13,350 validation rows
+- 13,350 test rows
+- No participant overlap between training, validation, and test sets
+
+This was important because the model must be evaluated on completely unseen participants rather than simply random rows from participants it has already seen.
+
+I trained six separate prediction models for the PaceMate-AI targets:
+
+- flare_risk
+- dizziness_risk
+- fatigue_risk
+- fainting_risk
+- need_to_hydrate
+- need_to_rest
+
+I then performed probability calibration experiments for the five secondary models that required calibration. Both sigmoid and isotonic calibration were tested against the original Random Forest probabilities.
+
+The calibration experiments showed meaningful improvements in probability quality.
+
+For dizziness risk, the Brier score improved from 0.207026 to 0.186172 using sigmoid calibration. ROC-AUC remained approximately 0.715, while PR-AUC remained approximately 0.488.
+
+For fatigue risk, the Brier score improved from 0.212434 to 0.203489 using isotonic calibration. PR-AUC improved from 0.566625 to 0.571593.
+
+For fainting risk, calibration produced the largest probability-quality improvement. The Brier score decreased from 0.041776 to 0.019522 using isotonic calibration. ROC-AUC remained approximately 0.952 and PR-AUC increased from 0.253716 to 0.259856.
+
+For hydration risk, sigmoid calibration reduced the Brier score from 0.130671 to 0.122473. ROC-AUC was approximately 0.893 and PR-AUC was approximately 0.758.
+
+For rest risk, isotonic calibration reduced the Brier score from 0.164215 to 0.159831. ROC-AUC was approximately 0.837 and PR-AUC was approximately 0.742.
+
+Based on these experiments, I built the calibrated production models:
+
+- Dizziness risk uses sigmoid calibration
+- Fatigue risk uses isotonic calibration
+- Fainting risk uses isotonic calibration
+- Hydration risk uses sigmoid calibration
+- Rest risk uses isotonic calibration
+- Flare risk continues to use its dedicated production model
+
+All six production models were successfully saved as joblib files in the models directory.
+
+I then evaluated the unified production models on the completely unseen test participants.
+
+The final test results were:
+
+- Flare risk: ROC-AUC 0.9216, PR-AUC 0.7221, F1 0.6062, Brier score 0.0843
+- Dizziness risk: ROC-AUC 0.7145, PR-AUC 0.4883, F1 0.5428, Brier score 0.1862
+- Fatigue risk: ROC-AUC 0.7158, PR-AUC 0.5716, F1 0.6130, Brier score 0.2035
+- Fainting risk: ROC-AUC 0.9516, PR-AUC 0.2599, F1 0.3363, Brier score 0.0195
+- Hydration risk: ROC-AUC 0.8927, PR-AUC 0.7582, F1 0.7231, Brier score 0.1225
+- Rest risk: ROC-AUC 0.8369, PR-AUC 0.7421, F1 0.7078, Brier score 0.1598
+
+The models were also evaluated with decision thresholds rather than relying on the default 0.50 classification threshold. Threshold tuning was performed on the validation participants and the selected thresholds were then evaluated on the completely unseen test participants.
+
+The selected thresholds are:
+
+- Flare risk: 0.55
+- Dizziness risk: 0.25
+- Fatigue risk: 0.30
+- Fainting risk: 0.20
+- Hydration risk: 0.35
+- Rest risk: 0.35
+
+The validation-set threshold optimization produced the following F1 scores:
+
+- Flare risk: 0.7236
+- Dizziness risk: 0.5725
+- Fatigue risk: 0.6245
+- Fainting risk: 0.4404
+- Hydration risk: 0.7298
+- Rest risk: 0.7377
+
+I then evaluated these fixed thresholds on the unseen test participants. This produced the final threshold evaluation results that are now saved in the results directory.
+
+I also created individual production-model verification scripts for every production model. These scripts load the saved model, load the unseen test dataset, reproduce the expected feature set, generate probability predictions, verify that probabilities remain within the valid 0 to 1 range, and print representative predictions alongside the actual target values.
+
+Verification successfully passed for:
+
+- Dizziness risk
+- Fatigue risk
+- Fainting risk
+- Hydration risk
+- Rest risk
+- Flare risk
+
+The flare verification script initially did not exist, which caused a module-not-found error when I attempted to run it. I then created the missing verification script and successfully reran the verification.
+
+The production models therefore now have both quantitative evaluation and basic artifact-level verification.
+
+One important observation from today's work is that the models are not equally strong. Flare, hydration, and rest prediction currently show the strongest overall predictive performance. Dizziness and fatigue are substantially weaker, with ROC-AUC values around 0.71. Fainting has very strong ROC-AUC but a difficult class-imbalance problem because positive cases are rare. This means the model should not be presented as uniformly accurate across every target.
+
+The calibration experiments also demonstrated why probability calibration is important. A model can have similar ROC-AUC before and after calibration while becoming substantially better at producing probabilities that correspond to actual observed frequencies. This is particularly important for PaceMate-AI because the intended system is based on risk estimates rather than only binary classifications.
+
+At this point, the core machine-learning pipeline is substantially more complete than it was at the beginning of the summer. The project now has:
+
+- Synthetic participant generation
+- Longitudinal daily observation generation
+- Target generation
+- Historical feature engineering
+- Participant-level train/validation/test splitting
+- Six machine-learning targets
+- Model training
+- Calibration experiments
+- Calibrated production models
+- Threshold optimization
+- Unseen-participant test evaluation
+- Production-model verification
+- Saved model artifacts
+- Saved evaluation results
+
+The next phase is to move beyond model training and turn these results into a complete research project. This includes improving and documenting the scientific methodology, performing deeper error and feature analysis, creating appropriate visualizations, developing the research paper, organizing the GitHub repository, creating the project website and portfolio presentation, producing a working demonstration, and preparing the competition materials.
+
+My goal is to make PaceMate-AI a complete, reproducible, well-documented research project that can withstand serious technical and scientific scrutiny.
