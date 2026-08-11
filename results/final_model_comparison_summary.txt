@@ -1,0 +1,16 @@
+PaceMate-AI Final Production Model Comparison
+
+Strongest F1: need_to_hydrate (0.7231)
+Strongest ROC-AUC: fainting_risk (0.9516)
+Strongest PR-AUC: need_to_hydrate (0.7582)
+Lowest Brier score: fainting_risk (0.0195)
+Highest recall: need_to_rest (0.8352)
+Highest precision: flare_risk (0.7526)
+
+Target-level observations:
+flare_risk: F1=0.6062, ROC-AUC=0.9216, PR-AUC=0.7221, Brier=0.0843, Precision=0.7526, Recall=0.5075
+dizziness_risk: F1=0.5428, ROC-AUC=0.7145, PR-AUC=0.4883, Brier=0.1862, Precision=0.4159, Recall=0.7809
+fatigue_risk: F1=0.6130, ROC-AUC=0.7158, PR-AUC=0.5716, Brier=0.2035, Precision=0.5021, Recall=0.7867
+fainting_risk: F1=0.3363, ROC-AUC=0.9516, PR-AUC=0.2599, Brier=0.0195, Precision=0.2815, Recall=0.4174
+need_to_hydrate: F1=0.7231, ROC-AUC=0.8927, PR-AUC=0.7582, Brier=0.1225, Precision=0.6528, Recall=0.8103
+need_to_rest: F1=0.7078, ROC-AUC=0.8369, PR-AUC=0.7421, Brier=0.1598, Precision=0.6142, Recall=0.8352
