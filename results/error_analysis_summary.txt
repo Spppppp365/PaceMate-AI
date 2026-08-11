@@ -1,0 +1,52 @@
+PaceMate-AI Model Error Analysis Summary
+=============================================
+
+Dataset
+-------
+Test examples analyzed: 80,100
+True negatives: 45,605
+False positives: 13,505
+False negatives: 4,962
+True positives: 16,028
+Overall error rate: 0.2305
+
+Prediction Error Patterns
+-------------------------
+False-positive proportion: 0.1686
+False-negative proportion: 0.0619
+False-positive mean probability: 0.4742
+False-positive median probability: 0.4573
+False-negative mean probability: 0.2233
+False-negative median probability: 0.2111
+
+Interpretation
+-------------
+False positives are cases in which the model predicted a positive outcome when the observed target was negative.
+False negatives are cases in which the model predicted a negative outcome when the observed target was positive.
+
+False positives generally received higher predicted probabilities than false negatives.
+
+Longitudinal Feature Patterns
+-----------------------------
+previous_symptom_severity: TN=5.2157, FP=7.3810, FN=6.6503, TP=7.6376
+symptom_3day_mean: TN=5.2403, FP=7.3325, FN=6.5368, TP=7.5495
+symptom_7day_mean: TN=5.2706, FP=7.1812, FN=6.4756, TP=7.4053
+previous_hrv: TN=43.1576, FP=26.0000, FN=41.8401, TP=23.1464
+hrv_3day_mean: TN=43.0041, FP=26.4716, FN=42.5007, TP=23.5052
+hrv_7day_mean: TN=42.8498, FP=26.9727, FN=42.8803, TP=24.0660
+symptom_change: TN=-0.0430, FP=0.0803, FN=0.1264, TP=0.2214
+hrv_change: TN=0.2273, FP=-1.2579, FN=0.3669, TP=-1.7688
+sleep_deficit: TN=0.0276, FP=-0.1617, FN=-0.1529, TP=-0.1827
+hydration_deficit: TN=-214.5342, FP=-98.4542, FN=-133.9913, TP=-259.1870
+
+Key Findings
+------------
+The largest difference between prediction outcome groups among the analyzed features was observed for hydration_deficit.
+Recent symptom history and HRV-related variables show meaningful differences across several prediction outcome groups.
+These findings complement the feature-importance and longitudinal ablation analyses by examining how the features differ specifically among correct and incorrect predictions.
+
+Limitations
+-----------
+The analysis is based on synthetic data and does not establish clinical validity or effectiveness.
+Differences between error groups describe associations within the generated dataset and should not be interpreted as causal relationships.
+The results should be interpreted alongside class imbalance, calibration, threshold analysis, and other model evaluation metrics.

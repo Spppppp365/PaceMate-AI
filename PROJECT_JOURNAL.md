@@ -864,7 +864,7 @@ The project therefore continued to use a separate participant-level test set as 
 
 The results establish a reproducible machine learning research pipeline, but they should not be interpreted as clinical validation.
 
-## Date: August 10, 2026
+## Day 4
 
 ## Milestone: Production Model Validation, Calibration, Threshold Optimization, and Verification
 
@@ -990,3 +990,261 @@ At this point, the core machine-learning pipeline is substantially more complete
 The next phase is to move beyond model training and turn these results into a complete research project. This includes improving and documenting the scientific methodology, performing deeper error and feature analysis, creating appropriate visualizations, developing the research paper, organizing the GitHub repository, creating the project website and portfolio presentation, producing a working demonstration, and preparing the competition materials.
 
 My goal is to make PaceMate-AI a complete, reproducible, well-documented research project that can withstand serious technical and scientific scrutiny.
+
+## Day 5
+
+## Milestone: Feature Importance Analysis and Longitudinal Feature Ablation
+
+Today the PaceMate-AI project continued its model analysis by investigating which features the trained models rely on most heavily and testing whether the longitudinal features provide meaningful predictive information.
+
+The goal was to move beyond simply reporting model performance and determine why the models were able to make their predictions.
+
+A secondary feature-importance analysis was created and run for three of the prediction targets:
+
+- dizziness_risk
+- fatigue_risk
+- fainting_risk
+
+The analysis used the trained Random Forest models and calculated feature importance values for all 32 model features.
+
+For dizziness risk, the most important features included:
+
+- symptom_7day_mean: 0.15279
+- symptom_3day_mean: 0.11281
+- previous_symptom_severity: 0.07098
+- hrv_7day_mean: 0.03333
+- hrv_3day_mean: 0.02939
+- symptom_7day_std: 0.02734
+- water_intake_ml: 0.02679
+- sleep_7day_std: 0.02606
+- hrv_7day_std: 0.02605
+- water_7day_std: 0.02599
+
+For fatigue risk, the strongest features were:
+
+- symptom_7day_mean: 0.16164
+- symptom_3day_mean: 0.11853
+- previous_symptom_severity: 0.07372
+- hrv_7day_mean: 0.02899
+- symptom_7day_std: 0.02770
+- sleep_7day_std: 0.02683
+- water_7day_std: 0.02679
+- hrv_7day_std: 0.02629
+- water_3day_std: 0.02597
+- water_intake_ml: 0.02564
+
+For fainting risk, the strongest features were:
+
+- symptom_3day_mean: 0.20195
+- symptom_7day_mean: 0.16289
+- previous_symptom_severity: 0.15733
+- hrv_7day_mean: 0.07581
+- hrv: 0.06172
+- hrv_3day_mean: 0.06103
+- previous_hrv: 0.04606
+- symptom_change: 0.04372
+- hrv_change: 0.01012
+- hrv_7day_std: 0.00984
+
+The feature-importance analysis showed that recent symptom history was consistently important across all three targets.
+
+The fainting-risk model also relied more heavily on HRV-related features than the dizziness-risk and fatigue-risk models.
+
+This provided additional evidence that the six prediction targets should not automatically be treated as identical prediction problems. Different targets can depend on different combinations of physiological and symptom-related variables.
+
+The feature-importance results were saved to:
+
+results/secondary_feature_importance.csv
+
+The project then performed a longitudinal feature ablation study.
+
+The purpose of this experiment was to directly test whether the historical and longitudinal features were actually contributing meaningful predictive information.
+
+The full models used all 32 engineered features.
+
+The comparison models used only six same-day features.
+
+The dataset sizes were:
+
+- Training rows: 62,300
+- Validation rows: 13,350
+- Test rows: 13,350
+- Full feature count: 32
+- Same-day feature count: 6
+
+For flare risk, the full longitudinal model achieved:
+
+- Accuracy: 0.8815
+- Precision: 0.7501
+- Recall: 0.5363
+- F1: 0.6255
+- ROC-AUC: 0.9211
+- PR-AUC: 0.7247
+- Brier score: 0.0847
+
+The same-day-only model achieved:
+
+- Accuracy: 0.8062
+- Precision: 0.2961
+- Recall: 0.0365
+- F1: 0.0651
+- ROC-AUC: 0.6169
+- PR-AUC: 0.2541
+- Brier score: 0.1511
+
+The longitudinal features improved flare-risk ROC-AUC by 0.3041 and PR-AUC by 0.4705.
+
+For dizziness risk, the full model achieved:
+
+- Accuracy: 0.7109
+- Precision: 0.5512
+- Recall: 0.2218
+- F1: 0.3163
+- ROC-AUC: 0.7064
+- PR-AUC: 0.4789
+- Brier score: 0.1881
+
+The same-day-only model achieved:
+
+- Accuracy: 0.6859
+- Precision: 0.3781
+- Recall: 0.0643
+- F1: 0.1100
+- ROC-AUC: 0.5513
+- PR-AUC: 0.3395
+- Brier score: 0.2144
+
+The longitudinal features improved dizziness-risk ROC-AUC by 0.1551 and PR-AUC by 0.1394.
+
+For fatigue risk, the full model achieved:
+
+- Accuracy: 0.6747
+- Precision: 0.5889
+- Recall: 0.4337
+- F1: 0.4995
+- ROC-AUC: 0.7098
+- PR-AUC: 0.5638
+- Brier score: 0.2054
+
+The same-day-only model achieved:
+
+- Accuracy: 0.6083
+- Precision: 0.4295
+- Recall: 0.1415
+- F1: 0.2129
+- ROC-AUC: 0.5228
+- PR-AUC: 0.3985
+- Brier score: 0.2413
+
+The longitudinal features improved fatigue-risk ROC-AUC by 0.1870 and PR-AUC by 0.1654.
+
+For fainting risk, the full model achieved:
+
+- Accuracy: 0.9759
+- Precision: 0.0000
+- Recall: 0.0000
+- F1: 0.0000
+- ROC-AUC: 0.9434
+- PR-AUC: 0.2400
+- Brier score: 0.0198
+
+The same-day-only model achieved:
+
+- Accuracy: 0.9759
+- Precision: 0.0000
+- Recall: 0.0000
+- F1: 0.0000
+- ROC-AUC: 0.7745
+- PR-AUC: 0.0582
+- Brier score: 0.0237
+
+The longitudinal features improved fainting-risk ROC-AUC by 0.1689 and PR-AUC by 0.1818.
+
+Although the threshold-based classification metrics were zero for both models, the ranking metrics showed a substantial difference. This was especially important because fainting risk is highly imbalanced.
+
+For need_to_hydrate, the full model achieved:
+
+- Accuracy: 0.8130
+- Precision: 0.7129
+- Recall: 0.6405
+- F1: 0.6747
+- ROC-AUC: 0.8906
+- PR-AUC: 0.7549
+- Brier score: 0.1241
+
+The same-day-only model achieved:
+
+- Accuracy: 0.7349
+- Precision: 0.5903
+- Recall: 0.4080
+- F1: 0.4825
+- ROC-AUC: 0.7845
+- PR-AUC: 0.5665
+- Brier score: 0.1684
+
+The longitudinal features improved hydration ROC-AUC by 0.1060 and PR-AUC by 0.1884.
+
+For need_to_rest, the full model achieved:
+
+- Accuracy: 0.7535
+- Precision: 0.6898
+- Recall: 0.6534
+- F1: 0.6711
+- ROC-AUC: 0.8341
+- PR-AUC: 0.7372
+- Brier score: 0.1618
+
+The same-day-only model achieved:
+
+- Accuracy: 0.6219
+- Precision: 0.5143
+- Recall: 0.3224
+- F1: 0.3964
+- ROC-AUC: 0.6150
+- PR-AUC: 0.4896
+- Brier score: 0.2327
+
+The longitudinal features improved rest-risk ROC-AUC by 0.2190 and PR-AUC by 0.2475.
+
+The ablation study provided strong experimental evidence that longitudinal information is an important part of the PaceMate-AI architecture.
+
+The largest ROC-AUC improvement occurred for flare risk, with an improvement of 0.3041.
+
+The largest PR-AUC improvement also occurred for flare risk, with an improvement of 0.4705.
+
+Need_to_rest had the second-largest ROC-AUC improvement at 0.2190.
+
+Need_to_hydrate had a particularly large PR-AUC improvement of 0.1884.
+
+The results also helped explain why features such as previous symptom severity, three-day symptom averages, seven-day symptom averages, previous HRV, and HRV rolling averages repeatedly appeared among the most important predictors.
+
+The ablation study was saved to:
+
+results/longitudinal_feature_ablation.csv
+
+The analysis script was saved to:
+
+generators/ablation_longitudinal_features.py
+
+The feature-importance analysis script was updated and retained in:
+
+generators/analyze_feature_importance.py
+
+At the end of the day's work, Git was checked and the working tree was clean.
+
+Today's work strengthened the scientific methodology of PaceMate-AI because it moved the analysis beyond simply reporting model scores and tested a specific hypothesis about the importance of longitudinal information.
+
+The main findings from today were:
+
+- Recent symptom history was consistently among the most important predictors.
+- HRV-related features were particularly important for the fainting-risk model.
+- Longitudinal features substantially improved performance compared with same-day-only features.
+- The benefit of longitudinal information was present across all six prediction targets.
+- The largest longitudinal improvement occurred for flare risk.
+- Fainting risk remains strongly affected by class imbalance and should not be judged using accuracy alone.
+- Different prediction targets rely on different feature patterns.
+- The longitudinal feature architecture is supported by an explicit ablation experiment rather than only theoretical reasoning.
+
+The project remains based on synthetic data, so these findings demonstrate the behavior of the machine-learning pipeline rather than clinical effectiveness.
+
+The next stage can focus on deeper model error analysis, examining false positives and false negatives, creating research-quality visualizations, and continuing to document the scientific methodology.
