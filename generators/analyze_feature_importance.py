@@ -27,11 +27,7 @@ EXCLUDED_COLUMNS = [
 
 
 def get_project_root():
-    return (
-        Path(__file__)
-        .resolve()
-        .parent.parent
-    )
+    return Path(__file__).resolve().parent.parent
 
 
 def load_dataset():
@@ -56,9 +52,7 @@ def prepare_features(data):
         if column in data.columns
     ]
 
-    return data.drop(
-        columns=excluded
-    )
+    return data.drop(columns=excluded)
 
 
 def load_model(target):
@@ -83,10 +77,12 @@ def analyze_target(
 ):
     importances = model.feature_importances_
 
-    results = pd.DataFrame({
-        "feature": feature_names,
-        "importance": importances,
-    })
+    results = pd.DataFrame(
+        {
+            "feature": feature_names,
+            "importance": importances,
+        }
+    )
 
     results = results.sort_values(
         "importance",
@@ -95,15 +91,13 @@ def analyze_target(
 
     print()
     print("=" * 70)
-    print(
-        f"FEATURE IMPORTANCE: {target}"
-    )
+    print(f"FEATURE IMPORTANCE: {target}")
     print("=" * 70)
 
     print(
-        results.head(15).round(5).to_string(
-            index=False
-        )
+        results.head(15)
+        .round(5)
+        .to_string(index=False)
     )
 
     return results
@@ -116,26 +110,17 @@ def main():
 
     data = load_dataset()
 
-    X = prepare_features(
-        data
-    )
+    X = prepare_features(data)
 
-    feature_names = list(
-        X.columns
-    )
+    feature_names = list(X.columns)
 
     print()
-    print(
-        f"Number of features: {len(feature_names)}"
-    )
+    print(f"Number of features: {len(feature_names)}")
 
     all_results = []
 
     for target in TARGET_COLUMNS:
-
-        model = load_model(
-            target
-        )
+        model = load_model(target)
 
         results = analyze_target(
             target,
@@ -145,9 +130,7 @@ def main():
 
         results["target"] = target
 
-        all_results.append(
-            results
-        )
+        all_results.append(results)
 
     combined = pd.concat(
         all_results,
@@ -171,9 +154,7 @@ def main():
     )
 
     print()
-    print(
-        f"Results saved to: {output_path}"
-    )
+    print(f"Results saved to: {output_path}")
 
     print()
     print("=" * 70)
