@@ -1248,3 +1248,930 @@ The main findings from today were:
 The project remains based on synthetic data, so these findings demonstrate the behavior of the machine-learning pipeline rather than clinical effectiveness.
 
 The next stage can focus on deeper model error analysis, examining false positives and false negatives, creating research-quality visualizations, and continuing to document the scientific methodology.
+
+## Day 6
+
+## Milestone: Model Error Analysis and Research-Quality Error Visualization
+
+Today the PaceMate-AI project moved into a deeper stage of model evaluation by analyzing not only overall performance metrics, but also the specific types of predictions the model made correctly and incorrectly.
+
+The goal was to understand the model's error patterns, compare false positives and false negatives, and determine whether the incorrect predictions showed identifiable differences in their underlying features.
+
+### Model Error Analysis
+
+A new model error analysis pipeline was created to examine the final flare-risk model's predictions on the unseen test participants.
+
+The analysis classified every test prediction into one of four outcome groups:
+
+- true_negative
+
+- false_positive
+
+- false_negative
+
+- true_positive
+
+The resulting error-analysis dataset was saved to:
+
+results/model_error_analysis.csv
+
+The analysis contained 80,100 test examples.
+
+The prediction outcomes were:
+
+- True negatives: 45,605
+
+- False positives: 13,505
+
+- False negatives: 4,962
+
+- True positives: 16,028
+
+The overall error rate was 0.2305.
+
+### Prediction Probability Analysis
+
+The predicted probability distributions were examined separately for false positives and false negatives.
+
+False positives had:
+
+- Mean predicted probability: 0.4742
+
+- Median predicted probability: 0.4573
+
+False negatives had:
+
+- Mean predicted probability: 0.2233
+
+- Median predicted probability: 0.2111
+
+This showed that false positives generally occurred at substantially higher predicted probabilities than false negatives.
+
+The error probability analysis was visualized in:
+
+results/figures/error_probability_distribution.png
+
+### Error Group Feature Analysis
+
+The project compared feature values across the four prediction outcome groups.
+
+For previous symptom severity, the mean values were:
+
+- True negative: 5.2157
+
+- False positive: 7.3810
+
+- False negative: 6.6503
+
+- True positive: 7.6376
+
+For three-day symptom mean:
+
+- True negative: 5.2403
+
+- False positive: 7.3325
+
+- False negative: 6.5368
+
+- True positive: 7.5495
+
+For seven-day symptom mean:
+
+- True negative: 5.2706
+
+- False positive: 7.1812
+
+- False negative: 6.4756
+
+- True positive: 7.4053
+
+These results showed a consistent pattern in which higher recent symptom-severity levels were associated with the positive prediction groups.
+
+The HRV features showed the opposite general pattern.
+
+For mean HRV:
+
+- True negative: 44.1716
+
+- False positive: 37.8320
+
+- False negative: 40.4609
+
+- True positive: 33.0294
+
+For previous HRV:
+
+- True negative: 43.9849
+
+- False positive: 37.8010
+
+- False negative: 40.7420
+
+- True positive: 33.4629
+
+This indicated that lower HRV values were associated with higher-risk prediction groups in the synthetic dataset.
+
+The complete feature-group analysis was saved to:
+
+results/error_group_feature_analysis.csv
+
+### Longitudinal Error Patterns
+
+The analysis also examined changes and rolling statistics rather than only individual observations.
+
+The mean symptom change values were:
+
+- True negative: -0.0430
+
+- False positive: 0.0803
+
+- False negative: 0.1264
+
+- True positive: 0.2214
+
+The true-positive group therefore had the largest average symptom increase.
+
+The mean HRV change values were:
+
+- True negative: 0.2273
+
+- False positive: -1.2579
+
+- False negative: 0.3669
+
+- True positive: -1.7688
+
+The true-positive group therefore showed the largest average decrease in HRV.
+
+The analysis also examined sleep deficit and hydration deficit.
+
+Mean sleep deficit:
+
+- True negative: 0.0276
+
+- False positive: -0.1617
+
+- False negative: -0.1529
+
+- True positive: -0.1827
+
+Mean hydration deficit:
+
+- True negative: -214.5342
+
+- False positive: -98.4542
+
+- False negative: -133.9913
+
+- True positive: -259.1870
+
+Hydration deficit showed the largest numerical difference among the analyzed feature groups.
+
+These patterns were visualized in:
+
+results/figures/longitudinal_error_feature_patterns.png
+
+### Research Visualizations
+
+Four research visualizations were generated.
+
+The first visualization shows the number of observations in each prediction outcome group:
+
+results/figures/prediction_outcomes.png
+
+The second visualization shows the predicted probability distributions for false positives and false negatives:
+
+results/figures/error_probability_distribution.png
+
+The third visualization compares selected feature means across true negatives, false positives, false negatives, and true positives:
+
+results/figures/error_group_feature_comparison.png
+
+The fourth visualization examines longitudinal feature patterns across the prediction outcome groups:
+
+results/figures/longitudinal_error_feature_patterns.png
+
+### Error Analysis Summary
+
+A dedicated error-analysis summary was generated and saved to:
+
+results/error_analysis_summary.txt
+
+The summary reported:
+
+- Test examples analyzed: 80,100
+
+- True negatives: 45,605
+
+- False positives: 13,505
+
+- False negatives: 4,962
+
+- True positives: 16,028
+
+- Overall error rate: 0.2305
+
+The summary also documented differences in predicted probability and longitudinal feature values across prediction outcome groups.
+
+### Structured Error Analysis Results Table
+
+A structured results table was created and saved to:
+
+results/error_analysis_results_table.csv
+
+The table contains counts, probability statistics, threshold statistics, and mean feature values for each error group.
+
+Selected results included:
+
+True negative:
+
+- Count: 45,605
+
+- Mean probability: 0.082670
+
+- Mean symptom severity: 4.999395
+
+- Mean previous symptom severity: 5.014593
+
+- Mean HRV: 44.171582
+
+- Mean previous HRV: 43.984914
+
+- Mean hydration deficit: -258.824397
+
+False positive:
+
+- Count: 13,505
+
+- Mean probability: 0.474239
+
+- Mean symptom severity: 6.403288
+
+- Mean previous symptom severity: 6.446486
+
+- Mean HRV: 37.831988
+
+- Mean previous HRV: 37.800963
+
+- Mean hydration deficit: -116.936567
+
+False negative:
+
+- Count: 4,962
+
+- Mean probability: 0.223271
+
+- Mean symptom severity: 5.562475
+
+- Mean previous symptom severity: 5.428859
+
+- Mean HRV: 40.460903
+
+- Mean previous HRV: 40.742040
+
+- Mean hydration deficit: -191.121896
+
+True positive:
+
+- Count: 16,028
+
+- Mean probability: 0.579188
+
+- Mean symptom severity: 6.845845
+
+- Mean previous symptom severity: 6.802702
+
+- Mean HRV: 33.029386
+
+- Mean previous HRV: 33.462940
+
+- Mean hydration deficit: -144.458284
+
+### Error Analysis Report
+
+A complete Markdown research report was generated and saved to:
+
+results/error_analysis_report.md
+
+The report consolidates the error-analysis findings into a research-oriented format.
+
+It documents:
+
+- Error-group distributions
+
+- Prediction probability patterns
+
+- Feature differences between error groups
+
+- Longitudinal feature patterns
+
+- Interpretation of false positives and false negatives
+
+- Limitations of the analysis
+
+The report emphasizes that the dataset is synthetic and that the observed relationships cannot establish clinical validity or causal relationships.
+
+### Technical Issues Resolved
+
+During visualization development, the error-analysis visualization script initially expected a column named predicted_probability.
+
+The actual dataset used the column:
+
+probability
+
+The visualization script was corrected to use the actual dataset schema.
+
+A second compatibility issue occurred because the installed version of Matplotlib did not accept the labels argument in plt.boxplot().
+
+The plotting code was corrected to use the compatible parameter.
+
+After these corrections, the visualization pipeline executed successfully and generated all four expected figures.
+
+The summary-generation script also initially produced a formatting error because duplicate column names caused a pandas Series to be returned where a scalar value was expected.
+
+The summary-generation code was corrected so that the error-group statistics could be formatted correctly.
+
+The corrected summary script then executed successfully and produced:
+
+results/error_analysis_summary.txt
+
+### GitHub Integration
+
+All Day 6 error-analysis work was added to the Git repository.
+
+The committed files included:
+
+- generators/analyze_model_errors.py
+
+- generators/compare_error_groups.py
+
+- generators/create_error_analysis_report.py
+
+- generators/create_error_analysis_results_table.py
+
+- generators/create_error_analysis_summary.py
+
+- generators/create_error_analysis_visualizations.py
+
+- results/error_analysis_report.md
+
+- results/error_analysis_results_table.csv
+
+- results/error_analysis_summary.txt
+
+- results/error_group_feature_analysis.csv
+
+- results/model_error_analysis.csv
+
+The four generated visualization files were also committed:
+
+- results/figures/prediction_outcomes.png
+
+- results/figures/error_probability_distribution.png
+
+- results/figures/error_group_feature_comparison.png
+
+- results/figures/longitudinal_error_feature_patterns.png
+
+PROJECT_JOURNAL.md was also included in the commit.
+
+The changes were successfully pushed to GitHub.
+
+The final Git status showed:
+
+On branch main
+
+Your branch is up to date with origin/main.
+
+nothing to commit, working tree clean
+
+### Day 6 Findings
+
+Today's analysis showed that the model's errors were not randomly distributed across the synthetic dataset.
+
+Higher recent symptom severity was associated with both false-positive and true-positive predictions.
+
+Lower HRV values were particularly common among true-positive predictions.
+
+True-positive examples also showed larger average increases in symptom severity and larger average decreases in HRV.
+
+False positives generally had substantially higher predicted probabilities than false negatives.
+
+The error analysis therefore provided a more detailed understanding of where the model succeeds and where it makes mistakes.
+
+An important finding was that false positives were not simply low-confidence predictions. Their average predicted probability was 0.4742, meaning many were relatively close to the classification threshold.
+
+This suggests that threshold analysis and calibration remain important parts of understanding the model's behavior.
+
+### Limitations
+
+The entire error analysis is based on synthetic data.
+
+The observed relationships between symptoms, HRV, hydration, and prediction outcomes reflect the synthetic data-generation process and model behavior.
+
+They should not be interpreted as evidence that these variables have the same predictive relationships in real POTS patients.
+
+The analysis also focuses primarily on the flare-risk model rather than treating all six prediction targets as equally analyzed.
+
+Future work should extend error analysis to the remaining prediction targets where appropriate.
+
+### Day 6 Conclusion
+
+Day 6 expanded PaceMate-AI from model-performance evaluation into detailed error analysis.
+
+The project now includes not only model metrics, calibration results, feature importance, and longitudinal ablation experiments, but also a structured analysis of false positives, false negatives, true positives, and true negatives.
+
+The project now has:
+
+- Model error-analysis data
+
+- Error-group feature analysis
+
+- Structured error-analysis results
+
+- Error-analysis summary
+
+- Research-oriented Markdown report
+
+- Four error-analysis visualizations
+
+- Longitudinal error-pattern analysis
+
+- Prediction probability analysis
+
+- Documented error-analysis limitations
+
+- GitHub-tracked analysis scripts
+
+- GitHub-tracked research outputs
+
+The most important methodological result from Day 6 is that the project is now evaluating model behavior at multiple levels rather than relying on a single performance metric.
+
+The workflow now examines:
+
+- Model discrimination
+
+- Probability quality
+
+- Classification thresholds
+
+- Feature importance
+
+- Longitudinal feature contribution
+
+- Prediction errors
+
+- Error-group feature patterns
+
+- Generalization to unseen participants
+
+This provides a substantially stronger foundation for the research paper and future experimental work.
+
+The next stage will build on this analysis by continuing the scientific documentation, refining the research presentation, organizing the repository, developing research-quality figures and tables, and preparing the project for external evaluation and competition submission.
+
+## Day 7
+
+## Milestone: Final Production Model Comparison and Research Visualization
+
+Today the PaceMate-AI project completed another major stage of model evaluation by creating a unified comparison of all six final production models and generating research-quality visualizations of their performance.
+
+The goal of today's work was to move from analyzing individual models to evaluating the complete multi-target system as a whole.
+
+This is important because PaceMate-AI does not rely on a single prediction target. The system contains six separate prediction models, and their strengths and weaknesses need to be evaluated together.
+
+The six final prediction targets are:
+
+- flare_risk
+- dizziness_risk
+- fatigue_risk
+- fainting_risk
+- need_to_hydrate
+- need_to_rest
+
+### Final Production Model Comparison
+
+A unified final production-model comparison was generated using the completely unseen test participants.
+
+The comparison includes:
+
+- Classification threshold
+- Positive prediction rate
+- Mean predicted probability
+- Accuracy
+- Precision
+- Recall
+- F1 score
+- ROC-AUC
+- PR-AUC
+- Brier score
+- True negatives
+- False positives
+- False negatives
+- True positives
+
+The final comparison was generated with:
+
+generators/create_model_comparison.py
+
+The resulting comparison was saved to:
+
+results/final_model_comparison.csv
+
+A human-readable summary was saved to:
+
+results/final_model_comparison_summary.txt
+
+### Final Production Model Results
+
+The final results for each production model were:
+
+### Flare Risk
+
+Threshold:
+
+- 0.55
+
+Performance:
+
+- Accuracy: 0.8784
+- Precision: 0.7526
+- Recall: 0.5075
+- F1: 0.6062
+- ROC-AUC: 0.9216
+- PR-AUC: 0.7221
+- Brier score: 0.0843
+
+The flare-risk model demonstrated strong discrimination and the highest precision among the six models.
+
+Its ROC-AUC of 0.9216 indicates strong ranking performance on the unseen participants.
+
+The selected threshold of 0.55 produced a relatively conservative classification strategy, resulting in higher precision but lower recall.
+
+### Dizziness Risk
+
+Threshold:
+
+- 0.25
+
+Performance:
+
+- Accuracy: 0.6032
+- Precision: 0.4159
+- Recall: 0.7809
+- F1: 0.5428
+- ROC-AUC: 0.7145
+- PR-AUC: 0.4883
+- Brier score: 0.1862
+
+The dizziness-risk model prioritized recall at its selected threshold.
+
+Its ROC-AUC and PR-AUC were substantially lower than those of the strongest models, indicating weaker overall discrimination.
+
+### Fatigue Risk
+
+Threshold:
+
+- 0.30
+
+Performance:
+
+- Accuracy: 0.6282
+- Precision: 0.5021
+- Recall: 0.7867
+- F1: 0.6130
+- ROC-AUC: 0.7158
+- PR-AUC: 0.5716
+- Brier score: 0.2035
+
+The fatigue-risk model also emphasized recall.
+
+Its discrimination was similar to the dizziness-risk model, although its F1 and PR-AUC were somewhat stronger.
+
+### Fainting Risk
+
+Threshold:
+
+- 0.20
+
+Performance:
+
+- Accuracy: 0.9604
+- Precision: 0.2815
+- Recall: 0.4174
+- F1: 0.3363
+- ROC-AUC: 0.9516
+- PR-AUC: 0.2599
+- Brier score: 0.0195
+
+The fainting-risk model achieved the highest ROC-AUC of all six models at 0.9516.
+
+It also achieved the lowest Brier score at 0.0195.
+
+However, fainting risk is highly imbalanced, with only approximately 2.4% positive examples.
+
+Because of this imbalance, the high accuracy and high ROC-AUC should not be interpreted as meaning that the model reliably identifies individual fainting-risk events.
+
+The relatively low precision, recall, and F1 demonstrate that the threshold-based classification performance remains limited.
+
+This remains one of the most important areas for future improvement.
+
+### Need to Hydrate
+
+Threshold:
+
+- 0.35
+
+Performance:
+
+- Accuracy: 0.8120
+- Precision: 0.6528
+- Recall: 0.8103
+- F1: 0.7231
+- ROC-AUC: 0.8927
+- PR-AUC: 0.7582
+- Brier score: 0.1225
+
+The hydration model produced the strongest overall F1 score of the six production models.
+
+It also produced the strongest PR-AUC at 0.7582.
+
+The combination of precision, recall, F1, ROC-AUC, and PR-AUC makes need_to_hydrate one of the strongest-performing targets in the current system.
+
+### Need to Rest
+
+Threshold:
+
+- 0.35
+
+Performance:
+
+- Accuracy: 0.7346
+- Precision: 0.6142
+- Recall: 0.8352
+- F1: 0.7078
+- ROC-AUC: 0.8369
+- PR-AUC: 0.7421
+- Brier score: 0.1598
+
+The rest model achieved the highest recall of all six models at 0.8352.
+
+It also achieved the second-highest F1 score and a strong PR-AUC.
+
+This indicates that the model was particularly effective at identifying positive rest-need examples at its selected operating threshold.
+
+### Overall Model Comparison
+
+The unified comparison showed that no single model was strongest across every metric.
+
+The strongest F1 score was achieved by:
+
+- need_to_hydrate: 0.7231
+
+The strongest ROC-AUC was achieved by:
+
+- fainting_risk: 0.9516
+
+The strongest PR-AUC was achieved by:
+
+- need_to_hydrate: 0.7582
+
+The lowest Brier score was achieved by:
+
+- fainting_risk: 0.0195
+
+The highest recall was achieved by:
+
+- need_to_rest: 0.8352
+
+The highest precision was achieved by:
+
+- flare_risk: 0.7526
+
+These results reinforce the importance of evaluating multiple metrics rather than selecting a model based on accuracy alone.
+
+For example, fainting risk had the highest ROC-AUC and lowest Brier score but had substantially weaker threshold-based precision, recall, and F1.
+
+Conversely, need_to_hydrate had a lower ROC-AUC than fainting risk but produced the strongest F1 and PR-AUC combination.
+
+This demonstrates that different metrics answer different questions about model behavior.
+
+### Probability Alignment
+
+The comparison also included the positive prediction rate and mean predicted probability for each target.
+
+For flare risk:
+
+- Positive prediction rate: 0.1845
+- Mean predicted probability: 0.1788
+
+For dizziness risk:
+
+- Positive prediction rate: 0.3016
+- Mean predicted probability: 0.2971
+
+For fatigue risk:
+
+- Positive prediction rate: 0.3743
+- Mean predicted probability: 0.3684
+
+For fainting risk:
+
+- Positive prediction rate: 0.0240
+- Mean predicted probability: 0.0213
+
+For need_to_hydrate:
+
+- Positive prediction rate: 0.3029
+- Mean predicted probability: 0.2959
+
+For need_to_rest:
+
+- Positive prediction rate: 0.3849
+- Mean predicted probability: 0.3791
+
+The mean predicted probabilities were generally close to the observed positive rates.
+
+This provides an additional indication that the probability outputs were reasonably aligned with the prevalence of the corresponding targets in the unseen test set.
+
+However, this comparison alone does not establish perfect calibration.
+
+### Final Confusion-Matrix Comparison
+
+The unified analysis also preserved the complete confusion-matrix counts for each target.
+
+Flare risk:
+
+- True negatives: 10,476
+- False positives: 411
+- False negatives: 1,213
+- True positives: 1,250
+
+Dizziness risk:
+
+- True negatives: 4,909
+- False positives: 4,415
+- False negatives: 882
+- True positives: 3,144
+
+Fatigue risk:
+
+- True negatives: 4,455
+- False positives: 3,898
+- False negatives: 1,066
+- True positives: 3,931
+
+Fainting risk:
+
+- True negatives: 12,687
+- False positives: 342
+- False negatives: 187
+- True positives: 134
+
+Need to hydrate:
+
+- True negatives: 7,563
+- False positives: 1,743
+- False negatives: 767
+- True positives: 3,277
+
+Need to rest:
+
+- True negatives: 5,515
+- False positives: 2,696
+- False negatives: 847
+- True positives: 4,292
+
+These values provide a more complete picture of the classification behavior than aggregate metrics alone.
+
+### Research-Quality Model Visualizations
+
+A dedicated visualization pipeline was created to present the final model comparison graphically.
+
+The visualization script was:
+
+generators/create_model_comparison_visualizations.py
+
+Four research figures were generated.
+
+The first figure compares model discrimination using ROC-AUC and PR-AUC:
+
+results/figures/model_discrimination_comparison.png
+
+The second figure compares the main classification metrics across all six models:
+
+results/figures/model_classification_metrics.png
+
+The third figure compares Brier scores across the models:
+
+results/figures/model_brier_score_comparison.png
+
+The fourth figure compares observed positive prediction rates with mean predicted probabilities:
+
+results/figures/model_probability_alignment.png
+
+These visualizations provide a more accessible way to communicate the differences between the six prediction targets.
+
+They will also be useful for the research paper, project website, presentation, and competition materials.
+
+### Scientific Interpretation
+
+Today's comparison demonstrated that PaceMate-AI should be treated as a multi-target system rather than as one model with six interchangeable outputs.
+
+The prediction targets have different levels of difficulty and different performance characteristics.
+
+The strongest overall targets currently appear to be:
+
+- need_to_hydrate
+- need_to_rest
+- flare_risk
+
+The more challenging targets currently appear to be:
+
+- dizziness_risk
+- fatigue_risk
+- fainting_risk
+
+The fainting model requires special interpretation because of the severe class imbalance.
+
+The results also demonstrate why multiple evaluation metrics are necessary.
+
+Accuracy alone would make fainting risk appear extremely strong, but precision, recall, and F1 reveal that identifying individual positive cases remains difficult.
+
+Similarly, ROC-AUC alone would not adequately communicate the practical classification behavior of the models.
+
+PR-AUC, F1, precision, recall, and Brier score therefore provide important complementary information.
+
+### Relationship to Previous Experiments
+
+Today's model comparison builds directly on the previous work completed during Days 4–6.
+
+Day 4 established calibrated production models and optimized thresholds.
+
+Day 5 demonstrated that longitudinal features substantially improved prediction compared with same-day-only features.
+
+Day 6 examined the detailed error patterns of the flare-risk model.
+
+Day 7 now places the six final production models into a single evaluation framework.
+
+This creates a progression from:
+
+- Model construction
+- Model calibration
+- Feature analysis
+- Longitudinal ablation
+- Error analysis
+- Multi-target comparison
+
+The project is therefore moving from simply building models toward constructing a complete research methodology around the models.
+
+### Research Limitations
+
+The models continue to be evaluated entirely using synthetic data.
+
+The six targets were generated according to predefined synthetic rules.
+
+The relationships identified by the models therefore reflect the synthetic data-generating process and should not be interpreted as established clinical relationships.
+
+The results demonstrate the technical behavior of the machine-learning pipeline but do not establish clinical effectiveness.
+
+Additional limitations include class imbalance for fainting risk and weaker discrimination for dizziness and fatigue.
+
+Future work should continue investigating these limitations rather than presenting the current system as uniformly accurate.
+
+### Day 7 Conclusion
+
+Day 7 completed a unified comparison of all six PaceMate-AI production models and produced four research-quality model-comparison visualizations.
+
+The project now contains:
+
+- Six final production models
+- Calibrated probability outputs
+- Optimized decision thresholds
+- Unseen-participant evaluation
+- Confusion-matrix analysis
+- Feature-importance analysis
+- Longitudinal feature ablation
+- Detailed flare-risk error analysis
+- Unified six-target model comparison
+- Model discrimination visualization
+- Classification-metric visualization
+- Brier-score visualization
+- Probability-alignment visualization
+- Structured CSV comparison results
+- Human-readable model comparison summary
+
+The most important result from today's work is that the six targets have substantially different performance profiles.
+
+Need_to_hydrate currently provides the strongest overall balance of F1 and PR-AUC.
+
+Need_to_rest provides the highest recall.
+
+Flare risk provides the highest precision among the six models.
+
+Fainting risk provides the strongest ROC-AUC and lowest Brier score but remains difficult to classify because of severe class imbalance.
+
+Dizziness and fatigue remain weaker prediction targets and should receive additional investigation before any claims of strong predictive performance are made.
+
+The next phase of the project can now move toward consolidating the experimental results into a formal research methodology, creating publication-quality tables and figures, improving the research paper, organizing the repository, and preparing the project for external evaluation.
+
+As throughout the project, all current findings should be interpreted as machine-learning experiments on synthetic data rather than evidence of clinical effectiveness.

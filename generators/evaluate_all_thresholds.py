@@ -13,6 +13,7 @@ from sklearn.metrics import (
     brier_score_loss,
 )
 
+
 TARGETS = [
     "flare_risk",
     "dizziness_risk",
@@ -21,6 +22,7 @@ TARGETS = [
     "need_to_hydrate",
     "need_to_rest",
 ]
+
 
 MODEL_FILES = {
     "flare_risk": "flare_risk_calibrated_model.joblib",
@@ -31,6 +33,9 @@ MODEL_FILES = {
     "need_to_rest": "need_to_rest_calibrated_model.joblib",
 }
 
+
+# These thresholds were selected using the validation dataset.
+# They must NOT be re-tuned on the test set.
 THRESHOLDS = {
     "flare_risk": 0.55,
     "dizziness_risk": 0.25,
@@ -39,6 +44,7 @@ THRESHOLDS = {
     "need_to_hydrate": 0.35,
     "need_to_rest": 0.35,
 }
+
 
 EXCLUDED_COLUMNS = [
     "participant_id",
@@ -71,18 +77,20 @@ def prepare_features(data):
 
 
 def load_model(target):
-    path = (
-        get_project_root()
+    project_root = get_project_root()
+
+    model_path = (
+        project_root
         / "models"
         / MODEL_FILES[target]
     )
 
-    if not path.exists():
+    if not model_path.exists():
         raise FileNotFoundError(
-            f"Model not found: {path}"
+            f"Model not found: {model_path}"
         )
 
-    return joblib.load(path)
+    return joblib.load(model_path)
 
 
 def main():
@@ -90,13 +98,18 @@ def main():
     print("PaceMate-AI Multi-Target Threshold Test Evaluation")
     print("=" * 80)
 
-    root = get_project_root()
+    project_root = get_project_root()
 
     test_path = (
-        root
+        project_root
         / "data"
         / "test_dataset.csv"
     )
+
+    if not test_path.exists():
+        raise FileNotFoundError(
+            f"Test dataset not found: {test_path}"
+        )
 
     test_data = pd.read_csv(test_path)
 
@@ -178,60 +191,80 @@ def main():
             predictions,
         )
 
+        true_negatives = matrix[0, 0]
+        false_positives = matrix[0, 1]
+        false_negatives = matrix[1, 0]
+        true_positives = matrix[1, 1]
+
         print(
-            f"Threshold:    {threshold:.2f}"
+            f"Threshold:              {threshold:.2f}"
         )
         print(
-            f"Accuracy:     {accuracy:.4f}"
+            f"Accuracy:               {accuracy:.4f}"
         )
         print(
-            f"Precision:    {precision:.4f}"
+            f"Precision:              {precision:.4f}"
         )
         print(
-            f"Recall:       {recall:.4f}"
+            f"Recall:                 {recall:.4f}"
         )
         print(
-            f"F1 Score:     {f1:.4f}"
+            f"F1 Score:               {f1:.4f}"
         )
         print(
-            f"ROC-AUC:      {roc_auc:.4f}"
+            f"ROC-AUC:                {roc_auc:.4f}"
         )
         print(
-            f"PR-AUC:       {pr_auc:.4f}"
+            f"PR-AUC:                 {pr_auc:.4f}"
         )
         print(
-            f"Brier Score:  {brier:.6f}"
+            f"Brier Score:            {brier:.6f}"
         )
         print(
-            f"Mean Predicted: {probabilities.mean():.4f}"
+            f"Actual Positive Rate:   {y_test.mean():.4f}"
+        )
+        print(
+            f"Predicted Positive Rate: "
+            f"{predictions.mean():.4f}"
+        )
+        print(
+            f"Mean Predicted Probability: "
+            f"{probabilities.mean():.4f}"
         )
 
         print()
         print("Confusion Matrix:")
         print(matrix)
 
-        results.append({
-            "target": target,
-            "threshold": threshold,
-            "positive_rate": y_test.mean(),
-            "mean_predicted_probability": probabilities.mean(),
-            "accuracy": accuracy,
-            "precision": precision,
-            "recall": recall,
-            "f1": f1,
-            "roc_auc": roc_auc,
-            "pr_auc": pr_auc,
-            "brier_score": brier,
-            "true_negatives": matrix[0, 0],
-            "false_positives": matrix[0, 1],
-            "false_negatives": matrix[1, 0],
-            "true_positives": matrix[1, 1],
-        })
+        results.append(
+            {
+                "target": target,
+                "threshold": threshold,
+                "positive_rate": y_test.mean(),
+                "mean_predicted_probability": (
+                    probabilities.mean()
+                ),
+                "predicted_positive_rate": (
+                    predictions.mean()
+                ),
+                "accuracy": accuracy,
+                "precision": precision,
+                "recall": recall,
+                "f1": f1,
+                "roc_auc": roc_auc,
+                "pr_auc": pr_auc,
+                "brier_score": brier,
+                "true_negatives": true_negatives,
+                "false_positives": false_positives,
+                "false_negatives": false_negatives,
+                "true_positives": true_positives,
+            }
+        )
 
     results_dataframe = pd.DataFrame(results)
 
     output_path = (
-        root
+        project_root
         / "results"
         / "final_threshold_evaluation.csv"
     )

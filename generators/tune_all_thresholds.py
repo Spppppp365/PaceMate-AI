@@ -122,10 +122,12 @@ def main():
     print(
         f"Validation rows: {len(validation_data)}"
     )
+
     print(
         f"Validation participants: "
         f"{validation_data['participant_id'].nunique()}"
     )
+
     print(
         f"Number of features: "
         f"{X_validation.shape[1]}"
@@ -142,9 +144,7 @@ def main():
 
         model = load_model(target)
 
-        y_validation = validation_data[
-            target
-        ]
+        y_validation = validation_data[target]
 
         probabilities = model.predict_proba(
             X_validation
@@ -163,6 +163,7 @@ def main():
         print(
             f"ROC-AUC: {roc_auc:.4f}"
         )
+
         print(
             f"PR-AUC:  {pr_auc:.4f}"
         )
@@ -209,23 +210,24 @@ def main():
                 best_f1 = f1
                 best_row = row
 
-        best_results.append(
-            best_row
-        )
+        best_results.append(best_row)
 
         print()
         print(
             f"Best threshold: "
             f"{best_row['threshold']:.2f}"
         )
+
         print(
             f"Precision:      "
             f"{best_row['precision']:.4f}"
         )
+
         print(
             f"Recall:         "
             f"{best_row['recall']:.4f}"
         )
+
         print(
             f"F1 Score:       "
             f"{best_row['f1']:.4f}"
