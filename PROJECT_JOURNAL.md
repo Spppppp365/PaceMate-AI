@@ -2450,3 +2450,103 @@ All current results continue to be interpreted as experiments on synthetic data 
 - Day 9 also produced statistical tests examining whether the repeated longitudinal-feature improvements differed from zero.
 
 - These analyses were performed on the PaceMate-AI project dataset and evaluate robustness and feature contribution within that dataset. They do not establish clinical validity or clinical effectiveness.  
+
+## Day 10 — Final Research Results, Research Conclusion, Limitations, and Figures
+
+### Goal
+
+Finalize the research results and organize the evidence needed for the final PaceMate-AI research presentation and paper.
+
+### Task 1 — Final Research Results Inventory
+
+Completed a comprehensive inventory of the final PaceMate-AI research results.
+
+The inventory documented:
+
+- Dataset composition and participant-level splitting
+- Six prediction targets
+- Primary experimental questions
+- Final held-out test-set performance
+- Confusion-matrix results
+- Probability results
+- Longitudinal-versus-same-day ablation results
+- Statistical analysis of repeated longitudinal improvements
+- Threshold robustness
+- Threshold selection across repeated participant-level splits
+- Robustness findings
+- Important negative findings
+- Target-level interpretation
+- Calibration results
+- Error-analysis outputs
+- Research limitations
+- Final figures
+
+The final results were based on 500 synthetic participants, 180 days of observations per participant, and participant-level separation into 350 training participants, 75 validation participants, and 75 test participants.
+
+The final longitudinal models used 32 features and were compared with six-feature same-day models across five participant-level experimental repeats using seeds 42 through 46.
+
+### Task 2 — Research Conclusion
+
+Created the final research conclusion based on the completed experimental results.
+
+The conclusion states that longitudinal information consistently improved ROC-AUC, PR-AUC, and Brier score across all six prediction targets in the repeated participant-level experiments.
+
+The conclusion also distinguishes between the strongest and weaker target-level results and emphasizes that fainting-risk remained substantially weaker on positive-class metrics because of severe class imbalance.
+
+The conclusion does not interpret the synthetic-data results as evidence of clinical effectiveness.
+
+The final conclusion states that the findings support the research hypothesis within the synthetic PaceMate-AI experimental environment, while real-world data, external validation, prospective evaluation, and clinical safety assessment would be required before drawing conclusions about clinical utility.
+
+### Task 3 — Limitations
+
+Documented the major limitations of the study.
+
+The limitations include:
+
+- The dataset and prediction targets are synthetic.
+- Model performance cannot be interpreted as clinical effectiveness.
+- Synthetic relationships may be easier for machine-learning models to learn than real-world relationships.
+- Generalization to unseen synthetic participants does not establish generalization to real patients.
+- Fainting-risk was strongly class-imbalanced.
+- Validation-selected thresholds varied across participant-level splits.
+- Exact thresholds should not be interpreted as universally optimal clinical decision thresholds.
+- PaceMate-AI is a research prototype rather than a clinically validated diagnostic or treatment system.
+
+The limitations section explicitly states that real-world validation and external evaluation would be required before making clinical performance or clinical utility claims.
+
+### Task 4 — Figures and Results Organization
+
+Organized the final results and identified the figures produced by the analysis.
+
+The final figures include:
+
+- model_discrimination_comparison.png
+- model_classification_metrics.png
+- model_brier_score_comparison.png
+- model_probability_alignment.png
+- prediction_outcomes.png
+- error_probability_distribution.png
+- error_group_feature_comparison.png
+- longitudinal_error_feature_patterns.png
+
+The figures correspond to model discrimination, classification performance, Brier scores, probability alignment, prediction outcomes, and error analysis.
+
+### Day 10 Conclusion
+
+Day 10 completed the research-results phase of PaceMate-AI.
+
+The project now has:
+
+- A finalized research-results inventory
+- A finalized research conclusion
+- A documented limitations section
+- An organized set of research figures
+- Final held-out test results
+- Repeated longitudinal-versus-same-day comparisons
+- Statistical analysis of repeated improvements
+- Threshold robustness analysis
+- Calibration analysis
+- Error analysis
+- Documented negative findings
+
+The research findings are presented as evidence from a controlled machine-learning experiment using synthetic data rather than as evidence of clinical effectiveness.

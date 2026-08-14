@@ -1,0 +1,11 @@
+## Conclusion
+
+Across five repeated participant-level experiments, longitudinal information consistently improved discrimination and probability quality for all six prediction targets compared with same-day information alone.
+
+The mean improvements in ROC-AUC, PR-AUC, and Brier score were positive in the expected directions for every target. These improvements were also consistent across the five participant-level experimental repeats, with statistical tests indicating that the observed differences were unlikely to be attributable to random variation within these repeated experiments.
+
+Final held-out test results demonstrated that predictive performance varied substantially across targets. The strongest discrimination was observed for fainting_risk and flare_risk based on ROC-AUC. Need_to_hydrate and need_to_rest produced strong combinations of discrimination and threshold-based classification performance. In contrast, fainting_risk showed substantially weaker positive-class precision, recall, F1, and PR-AUC despite its high ROC-AUC, reflecting the severe class imbalance of that target.
+
+Overall, these findings support the research hypothesis that longitudinal information can provide additional predictive information beyond same-day measurements within the synthetic PaceMate-AI dataset. The results demonstrate the value of incorporating historical information into the experimental prediction framework, while also showing that model performance depends substantially on the prediction target and evaluation metric.
+
+Because the dataset and prediction targets are synthetic, these findings should be interpreted as evidence from a controlled machine-learning experiment rather than evidence of clinical effectiveness. Evaluation using real-world patient data, external validation, prospective testing, and clinical safety assessment would be required before determining whether the approach could provide meaningful clinical utility.

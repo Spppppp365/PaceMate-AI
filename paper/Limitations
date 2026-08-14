@@ -1,0 +1,41 @@
+## Limitations
+
+### Synthetic Data
+
+The dataset and prediction targets used in this study are synthetic. Therefore, the observed model performance cannot be interpreted as clinical effectiveness or as evidence that the models would perform similarly in real patients. The relationships represented in the synthetic data may also be easier for a machine-learning model to learn than relationships present in real-world clinical data.
+
+External validation using real-world patient data would therefore be required to determine whether the observed patterns generalize beyond the synthetic experimental environment.
+
+### Participant-Level Generalization
+
+Participant-level splitting was used to prevent the same participant from appearing in the training, validation, and test sets. This provided a stronger test of generalization to previously unseen synthetic participants.
+
+However, because all participants were synthetically generated, successful generalization across participant-level splits does not establish generalization to unseen real patients.
+
+### Class Imbalance
+
+The prediction targets did not have equal outcome frequencies. Fainting_risk was particularly imbalanced, with an actual positive rate of only 2.40% in the final test set.
+
+This imbalance contributed to a substantial difference between ROC-AUC and positive-class classification metrics for fainting_risk. The model achieved a ROC-AUC of 0.9516 while producing a PR-AUC of 0.2599, precision of 0.2815, recall of 0.4174, and F1 score of 0.3363.
+
+This demonstrates the importance of evaluating multiple metrics rather than relying on ROC-AUC alone when outcomes are highly imbalanced.
+
+### Threshold Stability
+
+Decision thresholds were selected using validation data rather than being re-tuned on the final test set. Across the repeated participant-level experiments, the selected thresholds varied between splits, with some targets showing greater variation than others.
+
+Therefore, the thresholds identified in this study should be interpreted as experimental decision thresholds rather than universally optimal thresholds or clinical decision thresholds.
+
+### Target-Level Performance Differences
+
+Model performance varied substantially across the six prediction targets. Some targets demonstrated stronger discrimination and threshold-based classification performance than others.
+
+In particular, dizziness_risk and fatigue_risk achieved relatively high recall at their selected thresholds but also produced substantial numbers of false positives. Fainting_risk demonstrated strong ranking discrimination but weaker positive-class metrics because of its low prevalence.
+
+These differences indicate that performance should be evaluated separately for each prediction target rather than treating the multi-target system as having a single overall level of predictive performance.
+
+### Clinical Interpretation
+
+PaceMate-AI is a research prototype and is not a clinically validated diagnostic or treatment system.
+
+The model results demonstrate predictive behavior within the synthetic experimental environment but do not establish medical safety, diagnostic accuracy, or clinical usefulness. Real-world data, external validation, prospective evaluation, and clinical safety assessment would be required before conclusions about clinical utility could be made.
