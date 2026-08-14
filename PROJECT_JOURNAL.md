@@ -2175,3 +2175,278 @@ Dizziness and fatigue remain weaker prediction targets and should receive additi
 The next phase of the project can now move toward consolidating the experimental results into a formal research methodology, creating publication-quality tables and figures, improving the research paper, organizing the repository, and preparing the project for external evaluation.
 
 As throughout the project, all current findings should be interpreted as machine-learning experiments on synthetic data rather than evidence of clinical effectiveness.
+
+## Day 8
+
+## Milestone: Final Threshold Evaluation, Production Verification, and Project Documentation
+
+Today the PaceMate-AI project completed another verification stage for the production machine-learning pipeline.
+
+The main goal was to ensure that the final threshold-selection results were reproducible, that the evaluation scripts were synchronized with the latest model configuration, and that the project documentation accurately reflected the completed experimental work.
+
+### Final Threshold Evaluation
+
+The final production thresholds were evaluated using the completely unseen test participants.
+
+The selected thresholds remained:
+
+- Flare risk: 0.55
+- Dizziness risk: 0.25
+- Fatigue risk: 0.30
+- Fainting risk: 0.20
+- Need to hydrate: 0.35
+- Need to rest: 0.35
+
+The threshold-evaluation pipeline was rerun using the current production models and the held-out test dataset.
+
+The resulting evaluation was saved to:
+
+results/final_threshold_evaluation.csv
+
+The evaluation confirmed the classification behavior of the final production thresholds on participants who were not used during model training or threshold selection.
+
+### Threshold Evaluation Scripts
+
+The threshold evaluation pipeline was reviewed and updated to ensure that the current production configuration was being evaluated consistently.
+
+The relevant scripts included:
+
+generators/evaluate_all_thresholds.py
+
+generators/tune_all_thresholds.py
+
+These scripts are responsible for evaluating candidate thresholds and determining the selected operating points for the production models.
+
+The scripts were checked against the existing production-model and evaluation workflow so that threshold selection remained separated from the final unseen test evaluation.
+
+This distinction is important because the test participants should not be used to select the thresholds.
+
+The validation participants were used for threshold optimization, while the completely unseen test participants were reserved for final evaluation.
+
+### Production Model Verification
+
+The production model artifacts were also verified using the existing verification workflow.
+
+The verification process checks that the saved models can be loaded successfully, that the expected feature set is available, and that the models can generate valid probability predictions on the unseen test dataset.
+
+The probability outputs were checked to ensure that they remained within the valid range of 0 to 1.
+
+This provides an additional artifact-level check beyond the performance metrics reported in the model evaluation.
+
+### Reproducibility Check
+
+The project was reviewed to ensure that the major stages of the machine-learning pipeline remained represented by executable scripts and saved outputs.
+
+The current workflow includes:
+
+- Participant generation
+- Daily observation generation
+- Target generation
+- Feature engineering
+- Dataset validation
+- Participant-level dataset splitting
+- Model training
+- Hyperparameter experimentation
+- Probability calibration
+- Threshold optimization
+- Production model generation
+- Unseen-participant evaluation
+- Feature importance analysis
+- Longitudinal feature ablation
+- Error analysis
+- Model comparison
+- Threshold verification
+- Production artifact verification
+
+The project therefore contains both the code used to perform the experiments and the resulting datasets, metrics, visualizations, and model artifacts.
+
+### Project Journal Update
+
+The PaceMate-AI project journal was updated to document the latest experimental and verification work.
+
+The journal now records the progression of the project from the initial machine-learning pipeline through:
+
+- Dataset construction
+- Baseline modeling
+- Feature experimentation
+- Hyperparameter tuning
+- Threshold selection
+- Multi-target model development
+- Probability calibration
+- Production model creation
+- Longitudinal feature ablation
+- Feature importance analysis
+- Error analysis
+- Research-quality visualization
+- Six-target model comparison
+- Final threshold evaluation
+- Production-model verification
+
+Maintaining the journal alongside the code and experimental outputs provides a chronological record of the research process.
+
+This also preserves negative experimental results rather than only documenting successful improvements.
+
+### Scientific Significance
+
+Today's work primarily strengthened the reproducibility and documentation of the project rather than introducing a new modeling technique.
+
+The threshold-selection workflow now clearly separates model development, threshold optimization, and final test evaluation.
+
+This prevents the unseen test participants from influencing the selected operating thresholds.
+
+The production verification process also provides an additional check that the saved model artifacts continue to function correctly outside of the original training scripts.
+
+Together, these steps make the machine-learning pipeline easier to reproduce and audit.
+
+### Limitations
+
+The project continues to rely entirely on synthetic data.
+
+The prediction targets were generated using predefined rules rather than observations from real patients.
+
+Therefore, the threshold results and model performance metrics demonstrate the behavior of the experimental machine-learning system but do not establish clinical effectiveness.
+
+The test set is unseen with respect to model training and threshold selection, but it is still derived from the same synthetic data-generating process as the training and validation data.
+
+Real-world validation would therefore be necessary to determine whether the observed performance generalizes to actual patient populations.
+
+### Day 8 Conclusion
+
+Day 8 strengthened the final PaceMate-AI pipeline through threshold evaluation, production-model verification, reproducibility checks, and project documentation.
+
+The project now has a clearly documented separation between:
+
+- Model training
+- Validation
+- Calibration
+- Threshold selection
+- Final unseen-participant testing
+- Production artifact verification
+
+At this stage, PaceMate-AI has developed into a substantially complete machine-learning research pipeline rather than only a model-training experiment.
+
+The next phase can focus on consolidating the results into the formal research paper, creating publication-quality tables and figures, improving the scientific methodology section, organizing the GitHub repository, and preparing the project for external evaluation and competition submission.
+
+All current results continue to be interpreted as experiments on synthetic data rather than evidence of clinical effectiveness. 
+
+### Day 9 
+
+- Today I completed the PaceMate-AI robustness analysis for the six prediction targets: flare_risk, dizziness_risk, fatigue_risk, fainting_risk, need_to_hydrate, and need_to_rest.
+
+- I used data/training_dataset.csv as the input dataset.
+
+- I first ran Experiment 1A, Repeated Discrimination Robustness.
+
+- Experiment 1A used five participant-level splits with random seeds 42, 123, 456, 789, and 1000.
+
+- For every split, participants were randomly shuffled and divided into 70% training, 15% validation, and 15% testing. With 500 total participants, each split contained 350 training participants, 75 validation participants, and 75 test participants.
+
+- Participant overlap between the training, validation, and test groups was explicitly checked, and the experiment stopped with an error if overlap was detected.
+
+- The Random Forest configuration for Experiment 1A used 300 estimators, max_depth=16, min_samples_leaf=5, random_state=42, n_jobs=-1, and class_weight="balanced".
+
+- Features excluded from model training included participant_id, day, the current symptom variables dizziness, fatigue, brain_fog, and symptom_severity, and all six target columns.
+
+- For every target and participant split, I calculated validation ROC-AUC, validation PR-AUC, test ROC-AUC, and test PR-AUC.
+
+- The complete Experiment 1A results were saved to results/repeated_discrimination_robustness.csv.
+
+- Across the five participant-level splits, the mean test ROC-AUC was 0.9216 for flare_risk, 0.7175 for dizziness_risk, 0.7144 for fatigue_risk, 0.9481 for fainting_risk, 0.8882 for need_to_hydrate, and 0.8432 for need_to_rest.
+
+- The corresponding test ROC-AUC standard deviations were 0.0209 for flare_risk, 0.0193 for dizziness_risk, 0.0133 for fatigue_risk, 0.0160 for fainting_risk, 0.0191 for need_to_hydrate, and 0.0192 for need_to_rest.
+
+- The mean test PR-AUC was 0.7118 for flare_risk, 0.4829 for dizziness_risk, 0.5593 for fatigue_risk, 0.2530 for fainting_risk, 0.7441 for need_to_hydrate, and 0.7413 for need_to_rest.
+
+- The corresponding test PR-AUC standard deviations were 0.0270 for flare_risk, 0.0169 for dizziness_risk, 0.0107 for fatigue_risk, 0.0528 for fainting_risk, 0.0302 for need_to_hydrate, and 0.0104 for need_to_rest.
+
+- I then ran Experiment 1B, Repeated Threshold/F1 Robustness.
+
+- Experiment 1B used five repeated participant-level splits with split seeds 42, 43, 44, 45, and 46.
+
+- Each repeat again used 350 training participants, 75 validation participants, and 75 test participants.
+
+- The same Random Forest configuration was used: 300 estimators, max_depth=16, min_samples_leaf=5, random_state=42, n_jobs=-1, and class_weight="balanced".
+
+- For each target, predicted probabilities were generated for the validation and test sets.
+
+- I evaluated classification thresholds from 0.10 through 0.90 in increments of 0.05.
+
+- The threshold producing the highest validation F1 score was selected using the validation data.
+
+- The selected validation threshold was then applied to the held-out test probabilities to calculate test precision, test recall, and test F1.
+
+- The complete Experiment 1B results were saved to results/repeated_threshold_f1_robustness.csv.
+
+- The mean selected threshold was 0.59 for flare_risk, 0.43 for dizziness_risk, 0.41 for fatigue_risk, 0.65 for fainting_risk, 0.51 for need_to_hydrate, and 0.45 for need_to_rest.
+
+- The mean test precision was 0.6244 for flare_risk, 0.4309 for dizziness_risk, 0.4945 for fatigue_risk, 0.2669 for fainting_risk, 0.6276 for need_to_hydrate, and 0.6258 for need_to_rest.
+
+- The mean test recall was 0.7486 for flare_risk, 0.7628 for dizziness_risk, 0.7704 for fatigue_risk, 0.5193 for fainting_risk, 0.8044 for need_to_hydrate, and 0.8247 for need_to_rest.
+
+- The mean test F1 score was 0.6803 for flare_risk, 0.5501 for dizziness_risk, 0.6020 for fatigue_risk, 0.3431 for fainting_risk, 0.7042 for need_to_hydrate, and 0.7116 for need_to_rest.
+
+- I then ran Experiment 1C, Repeated Longitudinal Feature Ablation.
+
+- The purpose of this experiment was to compare the complete feature set with a same-day-only feature set to determine how much predictive performance changed when longitudinal information was removed.
+
+- The full feature set was created after excluding participant_id, day, the current symptom variables, and all target columns.
+
+- The longitudinal features removed for the same-day-only model included columns beginning with previous_, sleep_3day_, sleep_7day_, water_3day_, water_7day_, hrv_3day_, hrv_7day_, symptom_3day_, and symptom_7day_.
+
+- The exact longitudinal features hrv_change, resting_hr_change, symptom_change, sleep_deficit, and hydration_deficit were also removed.
+
+- The resulting full feature set contained 32 features, while the same-day-only feature set contained 6 features.
+
+- Experiment 1C used five participant-level splits with seeds 42, 43, 44, 45, and 46.
+
+- For every target and repeat, I trained one Random Forest using the full feature set and another Random Forest using only the same-day features.
+
+- The Random Forest models used 300 estimators, random_state=42, n_jobs=-1, max_depth=None, min_samples_split=2, and min_samples_leaf=1.
+
+- The full and same-day-only models were evaluated on the held-out test participants using ROC-AUC, PR-AUC, and Brier score.
+
+- The complete Experiment 1C results were saved to results/repeated_longitudinal_ablation.csv.
+
+- Across the five repeats, the mean ROC-AUC improvement from the full longitudinal feature set compared with the same-day-only feature set was +0.2885 for flare_risk, +0.1582 for dizziness_risk, +0.1777 for fatigue_risk, +0.1613 for fainting_risk, +0.1020 for need_to_hydrate, and +0.2101 for need_to_rest.
+
+- The mean PR-AUC improvement was +0.4658 for flare_risk, +0.1433 for dizziness_risk, +0.1593 for fatigue_risk, +0.1858 for fainting_risk, +0.1789 for need_to_hydrate, and +0.2399 for need_to_rest.
+
+- The Brier difference was calculated as the full-model Brier score minus the same-day-only Brier score.
+
+- The mean Brier difference was -0.0664 for flare_risk, -0.0282 for dizziness_risk, -0.0352 for fatigue_risk, -0.0042 for fainting_risk, -0.0432 for need_to_hydrate, and -0.0702 for need_to_rest.
+
+- Because a lower Brier score represents better probabilistic prediction performance, the negative Brier differences indicate that the full feature model had lower Brier scores than the same-day-only model across the repeated experiments.
+
+- I then performed the statistical analysis of the repeated longitudinal ablation results.
+
+- The statistical analysis loaded results/repeated_longitudinal_ablation.csv and performed a one-sample t-test against zero for the repeated ROC-AUC improvements, PR-AUC improvements, and Brier-score differences for each of the six targets.
+
+- For flare_risk, the mean ROC-AUC improvement was +0.288498 with p=0.000028, the mean PR-AUC improvement was +0.465775 with p=0.000003, and the mean Brier difference was -0.066374 with p=0.000097.
+
+- For dizziness_risk, the mean ROC-AUC improvement was +0.158231 with p=0.000002, the mean PR-AUC improvement was +0.143284 with p=0.000017, and the mean Brier difference was -0.028213 with p=0.000002.
+
+- For fatigue_risk, the mean ROC-AUC improvement was +0.177668 with p=0.000007, the mean PR-AUC improvement was +0.159338 with p=0.000038, and the mean Brier difference was -0.035167 with p=0.000004.
+
+- For fainting_risk, the mean ROC-AUC improvement was +0.161298 with p=0.000064, the mean PR-AUC improvement was +0.185775 with p=0.000028, and the mean Brier difference was -0.004180 with p=0.001179.
+
+- For need_to_hydrate, the mean ROC-AUC improvement was +0.101995 with p=0.000006, the mean PR-AUC improvement was +0.178903 with p=0.000083, and the mean Brier difference was -0.043176 with p=0.000009.
+
+- For need_to_rest, the mean ROC-AUC improvement was +0.210122 with p=0.000003, the mean PR-AUC improvement was +0.239864 with p=0.000023, and the mean Brier difference was -0.070232 with p<0.000001.
+
+- The statistical analysis results were saved to results/robustness_statistical_analysis.csv.
+
+- Finally, I created the Day 9 combined robustness summary by loading the three experiment result files and grouping their results by target.
+
+- The summary combined the mean and standard deviation of validation and test ROC-AUC and PR-AUC from Experiment 1A, the mean and standard deviation of thresholds and F1-related metrics from Experiment 1B, and the mean and standard deviation of the ROC-AUC improvement, PR-AUC improvement, and Brier difference from Experiment 1C.
+
+- The final combined summary was saved to results/day9_robustness_summary.csv.
+
+- Day 9 therefore completed three repeated robustness experiments: repeated discrimination robustness, repeated threshold/F1 robustness, and repeated longitudinal feature ablation.
+
+- The results showed that model performance varied across participant-level splits but remained measurable across all six prediction targets.
+
+- The longitudinal ablation consistently showed higher ROC-AUC and PR-AUC for the full feature model than for the same-day-only model across the five repeated splits.
+
+- Day 9 also produced statistical tests examining whether the repeated longitudinal-feature improvements differed from zero.
+
+- These analyses were performed on the PaceMate-AI project dataset and evaluate robustness and feature contribution within that dataset. They do not establish clinical validity or clinical effectiveness.  
