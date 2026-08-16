@@ -2550,3 +2550,166 @@ The project now has:
 - Documented negative findings
 
 The research findings are presented as evidence from a controlled machine-learning experiment using synthetic data rather than as evidence of clinical effectiveness.
+
+## Days 11–23 — Website Development, Programming, GitHub, Deployment, and Public Research Presentation
+
+### Goal
+
+Extend PaceMate-AI beyond the completed machine-learning research pipeline by learning the programming skills needed to build a public research website and developing a website that presents the project's methodology, results, limitations, and research purpose.
+
+### Task 1 — Learning JavaScript and Web Development
+
+During the first part of this period, learned the fundamentals of JavaScript and the programming concepts needed to develop the PaceMate-AI website.
+
+Worked with:
+
+- JavaScript syntax and programming structure
+- Variables, expressions, and functions
+- Components and reusable interface structure
+- JSX syntax
+- React component structure
+- HTML elements within JSX
+- CSS styling and layout
+- Classes and selectors
+- Responsive web design
+- Browser-based development and testing
+- The relationship between JavaScript, React, JSX, and CSS
+
+The website development process provided an opportunity to apply these programming concepts directly to a working research project rather than learning them only through isolated exercises.
+
+### Task 2 — PaceMate-AI Research Website
+
+Created a public PaceMate-AI research website designed to communicate the project and its experimental findings.
+
+The website was organized into sections covering:
+
+- The PaceMate-AI project introduction
+- The research question
+- Longitudinal information
+- Participant-level evaluation
+- The six prediction targets
+- Final model results
+- Research metrics
+- Interactive demonstration content
+- Methodology
+- Important limitations and research context
+
+The website was designed to present the project as a machine-learning research study rather than simply as a software application.
+
+### Task 3 — Website Interface Development
+
+Developed the visual interface and layout of the website using React, JSX, and CSS.
+
+Implemented and refined:
+
+- Navigation between research sections
+- PaceMate-AI branding
+- Research and results headings
+- Research cards
+- Prediction interface elements
+- Results metric cards
+- Methodology statistics
+- Interactive-demo placeholder
+- Research limitation section
+- Footer content
+- Responsive layouts for smaller screens
+
+The CSS was iteratively refined to improve spacing, alignment, typography, navigation spacing, section organization, card layouts, and overall visual consistency.
+
+Particular attention was given to presenting research information clearly, including the organization of numbered research items, methodology statistics, prediction information, and final results.
+
+### Task 4 — Connecting the Research to the Website
+
+Transferred the major research findings into the public research website.
+
+The website presents the completed experimental results, including:
+
+- 500 synthetic participants
+- 180 days per participant
+- 89,000 modeling observations
+- 32 longitudinal features
+- Six prediction targets
+- Five repeated participant-level experiments
+- Longitudinal-versus-same-day comparisons
+- ROC-AUC results
+- PR-AUC results
+- F1 results
+- Brier-score results
+- Research limitations
+
+The website also clearly distinguishes the experimental findings from clinical claims and explains that the project uses synthetic research data.
+
+### Task 5 — GitHub Website Workflow
+
+Used Git and GitHub to manage the website project.
+
+Completed the process of:
+
+- Adding the website files to the PaceMate-AI repository
+- Committing the completed website
+- Pushing the website to GitHub
+- Connecting the GitHub repository to Vercel for deployment
+- Using the repository for future website updates
+
+### Task 6 — Public Website Deployment
+
+Deployed the PaceMate-AI website publicly using Vercel.
+
+Configured the deployment for the Vite-based React application, including the correct project directory and build configuration.
+
+The website was successfully built and deployed, creating a publicly accessible version of the PaceMate-AI research project.
+
+The deployment also allows changes pushed to the connected GitHub repository to be automatically deployed to the website.
+
+### Task 7 — Web Analytics
+
+Added Vercel Web Analytics to the website.
+
+Configured the React application to include the Vercel Analytics component so that the deployed website can collect:
+
+- Visitor information
+- Page views
+- Website usage information
+
+The analytics system was added to the research website to allow future monitoring of public engagement with the project.
+
+### Task 8 — Final Website Refinement
+
+Continued refining the website after deployment.
+
+The final development work focused on improving the presentation rather than changing the underlying research results.
+
+Refinements included:
+
+- Navigation spacing
+- Research-section spacing
+- Numbered research-item layout
+- Methodology-item spacing
+- Prediction-card spacing
+- Footer layout
+- Footer text visibility
+- Responsive behavior
+- Overall visual consistency
+
+The final website was designed to provide a clear public presentation of the PaceMate-AI research process and findings.
+
+### Days 11–23 Conclusion
+
+Days 11–23 expanded PaceMate-AI from a completed machine-learning research pipeline into a publicly presented research project.
+
+During this period, I learned JavaScript and the programming concepts required to develop the website, learned how React and JSX are used to structure a web application, and applied those skills to build the PaceMate-AI research site.
+
+The project also gained:
+
+- A public research website
+- A React-based website interface
+- A structured presentation of the research question
+- A presentation of the final research results
+- A methodology section
+- A documented limitations section
+- A Git and GitHub workflow for the website
+- A public Vercel deployment
+- An automated deployment workflow connected to GitHub
+- Vercel Web Analytics
+
+The website now provides a public presentation of the completed PaceMate-AI research while preserving the distinction between controlled synthetic-data experimentation and clinical validation.  
