@@ -1,4 +1,5 @@
 import "./App.css";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   return (
@@ -306,16 +307,18 @@ function App() {
         </section>
       </main>
 
-      <footer className="footer">
-  <div>
-    <strong>PaceMate-AI</strong>
-    <span>
-      A longitudinal machine-learning research prototype.
-    </span>
-  </div>
+            <footer className="footer">
+        <div>
+          <strong>PaceMate-AI</strong>
+          <span>
+            A longitudinal machine-learning research prototype.
+          </span>
+        </div>
 
-  <span>Research project · 2026</span>
-</footer>
+        <span>Research project · 2026</span>
+      </footer>
+
+      <Analytics />
     </div>
   );
 }
